@@ -29,12 +29,13 @@ public class Course {
         return isAdded;
     }
 
-    public Student findStudentById(int id){
-        Student toReturn = null;
-        if (id <= students.size()) {
-            toReturn = students.get(id - 1);
+    public boolean isStudentEnrolled(Student student){
+        boolean enrolled = false;
+
+        if (students.contains(student)) {
+            enrolled = true;
         }
-        return toReturn;
+        return enrolled;
     }
 
     @Override
