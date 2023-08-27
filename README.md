@@ -3,8 +3,8 @@
 
 Manager of an university containing classes, students and teachers.
 
-
-
+## UML Class Diagram
+![Class Diagram](https://github.com/alejandroFonsecaGlobant/Globersity/blob/main/data/Class%20Diagram%20(UML).png)
 
 ## Author
 
