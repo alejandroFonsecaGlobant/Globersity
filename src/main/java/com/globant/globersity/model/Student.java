@@ -17,14 +17,6 @@ public class Student {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
     @Override
     public String toString() {
         return "id: " + id + "\nname: " + name + "\nage: " + age;
