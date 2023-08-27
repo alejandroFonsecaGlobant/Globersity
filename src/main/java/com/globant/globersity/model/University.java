@@ -43,7 +43,8 @@ public class University {
         String courseData = "";
         if (id <= courses.size()){
             Course course = courses.get(id-1);
-            courseData = Display.COURSE_DATA_HEAD + "\n" + Display.TEACHER_HEAD
+            courseData = Display.COURSE_DATA_HEAD + "\n" + course.toString()
+                    + "\n" + Display.TEACHER_HEAD
                     + "\n" + course.teacherToString() + "\n" + Display.STUDENTS_HEAD
                     + "\n" + course.studentsToString();
         }

@@ -26,17 +26,38 @@ public class Main {
                     case 1:
                         Student student = createStudent(scanner, globersity);
                         if (student != null) {
-                            System.out.println(student);
                             boolean enlisted = false;
                             while (!enlisted) {
                                 enlisted = enlistStudentToCourse(scanner, globersity, student);
-                                System.out.println(globersity.displayCourseData(1));
                             }
                         }
                         break;
+
+                    case 2:
+                        Course course = createCourse(scanner, globersity);
+                        if (course != null) {
+                            boolean done = false;
+                            while (!done) {
+                                done = assignTeacherToCourse(scanner,globersity,course.getId());
+                            }
+
+                            done = false;
+                            while (!done) {
+                                boolean enlisted = enlistStudentToCourse(scanner,globersity,course.getId());
+                                if (enlisted) {
+                                    System.out.println("Enlist another student?\n1 - Yes\n2 - No");
+                                    int decision = Integer.parseInt(scanner.nextLine());
+                                    if (decision == 2) {
+                                        done = true;
+                                    }
+                                }
+                            }
+                        }
+                        System.out.println(globersity.displayCourseData(5));
+                        break;
                 }
             }
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             System.out.println(Display.INPUT_ERROR);
         }
     }
@@ -99,7 +120,7 @@ public class Main {
             System.out.println("Student created with id no. " + student.getId());
             return student;
 
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             System.out.println(Display.INPUT_ERROR);
             return null;
         }
@@ -125,7 +146,77 @@ public class Main {
             }
             return enlisted;
 
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
+            System.out.println(Display.INPUT_ERROR);
+            return false;
+        }
+    }
+
+    public static Course createCourse (Scanner scanner, University university) {
+        try {
+            System.out.println(Display.CREATE_COURSE_HEAD);
+
+            System.out.println("Enter the name of the course (Not empty):");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter the classroom of the course (Not empty):");
+            String classroom = scanner.nextLine();
+            if (name.isEmpty() || classroom.isEmpty()) {
+                throw new InputMismatchException();
+            }
+
+            Course course = university.createCourse(name, classroom);
+            System.out.println("Course created with id no. " + course.getId());
+            return course;
+
+        } catch (Exception e) {
+            System.out.println(Display.INPUT_ERROR);
+            return null;
+        }
+    }
+
+    public static boolean assignTeacherToCourse (Scanner scanner, University university, int courseId){
+        try {
+            System.out.println("Enter the id of the teacher to assign (Greater than 0):");
+            boolean assigned = false;
+            int teacherId = Integer.parseInt(scanner.nextLine());
+            if (teacherId <= 0) {
+                throw new InputMismatchException();
+            }
+            assigned = university.assignTeacherToCourse(teacherId,courseId);
+            if (assigned){
+                System.out.println("Teacher assigned to course with id no. " + teacherId);
+            } else {
+                System.out.println("Wrong teacher id, try again");
+            }
+            return assigned;
+
+        } catch (Exception e) {
+            System.out.println(Display.INPUT_ERROR);
+            return false;
+        }
+    }
+
+    public static boolean enlistStudentToCourse(Scanner scanner, University university, int courseId) {
+        try {
+            System.out.println("Enter the id of the student to enlist (greater than 0):");
+            boolean enlisted = false;
+            int studentId = Integer.parseInt(scanner.nextLine());
+            if (studentId == 0) {
+                return true;
+            } else if (studentId <= 0) {
+                throw new InputMismatchException();
+            }
+
+            enlisted = university.enlistStudentToCourse(studentId,courseId);
+            if (enlisted){
+                System.out.println("Student with id no. "+ studentId +" enlisted in course");
+            } else {
+                System.out.println("Wrong id or student already enlisted to course, try again");
+            }
+            return enlisted;
+
+        } catch (Exception e) {
             System.out.println(Display.INPUT_ERROR);
             return false;
         }
