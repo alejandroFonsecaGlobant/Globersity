@@ -63,9 +63,8 @@ public class University {
         return course;
     }
 
-    public Teacher storeTeacher(Teacher teacher) {
+    public void storeTeacher(Teacher teacher) {
         teachers.add(teacher);
-        return teacher;
     }
 
     public boolean enlistStudentToCourse(Student student, int courseId) {

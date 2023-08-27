@@ -3,6 +3,7 @@ package main.java.com.globant.globersity.ui;
 import main.java.com.globant.globersity.model.*;
 import main.java.com.globant.globersity.utils.Display;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -54,6 +55,38 @@ public class Main {
                             }
                         }
                         System.out.println(globersity.displayCourseData(5));
+                        break;
+
+                    case 3:
+                        System.out.println(globersity.displayAllTeachers());
+                        break;
+
+                    case 4:
+                        System.out.println(globersity.displayAllCourses());
+                        break;
+
+                    case 5:
+                        System.out.println("Enter the id of the student to obtain course from (greater than 0):");
+                        try {
+                            int id = Integer.parseInt(scanner.nextLine());
+                            String courses = globersity.displayStudentCourses(id);
+                            if (courses.equalsIgnoreCase(Display.COURSES_HEAD + "\n")) {
+                                System.out.println("The student with id " + id + " is not enlisted to any course");
+                            } else {
+                                System.out.println(courses);
+                            }
+                        } catch (Exception e) {
+                            System.out.println(Display.INPUT_ERROR);
+                        }
+                        break;
+
+                    case 6:
+                        System.out.println("Shutting down...");
+                        exit = true;
+                        break;
+
+                    default:
+                        System.out.println(Display.INPUT_ERROR);
                         break;
                 }
             }
