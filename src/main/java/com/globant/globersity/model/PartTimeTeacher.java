@@ -1,7 +1,7 @@
 package main.java.com.globant.globersity.model;
 
 public class PartTimeTeacher extends Teacher {
-    private int weeklyHours;
+    private final int weeklyHours;
     public PartTimeTeacher (String name, int baseSalary, int weeklyHours) {
         super(name, baseSalary);
         this.weeklyHours = weeklyHours;

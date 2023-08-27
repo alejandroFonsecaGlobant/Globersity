@@ -57,14 +57,6 @@ public class Course {
         return teacher.toString();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getClassroom() {
-        return classroom;
-    }
-
     public int getId() {
         return id;
     }
