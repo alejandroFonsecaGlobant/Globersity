@@ -3,11 +3,42 @@ package main.java.com.globant.globersity.ui;
 import main.java.com.globant.globersity.model.*;
 import main.java.com.globant.globersity.utils.Display;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
         University globersity = new University();
         init(globersity);
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
+
+        try {
+            System.out.println("Welcome to Globersity Manager");
+            while (!exit) {
+                System.out.println("Write the number of the option you want to do:\n1 - Create a student" +
+                        "\n2 - Create a course\n3 - Show all registered teachers\n" +
+                        "4 - Show all registered courses\n5 - Show courses from a student" +
+                        "\n6 - Exit");
+                int option = Integer.parseInt(scanner.nextLine());
+                switch (option) {
+                    case 1:
+                        Student student = createStudent(scanner, globersity);
+                        if (student != null) {
+                            System.out.println(student);
+                            boolean enlisted = false;
+                            while (!enlisted) {
+                                enlisted = enlistStudentToCourse(scanner, globersity, student);
+                                System.out.println(globersity.displayCourseData(1));
+                            }
+                        }
+                        break;
+                }
+            }
+        } catch (InputMismatchException e) {
+            System.out.println(Display.INPUT_ERROR);
+        }
     }
 
     public static void init (University university) {
@@ -46,5 +77,57 @@ public class Main {
         university.assignTeacherToCourse(4,4);
         university.enlistStudentToCourse(1,4);
         university.enlistStudentToCourse(4,4);
+    }
+
+    public static Student createStudent(Scanner scanner, University university) {
+        try {
+            System.out.println(Display.CREATE_STUDENT_HEAD);
+
+            System.out.println("Enter the name of the student (Not empty):");
+            String name = scanner.nextLine();
+            if (name.isEmpty()) {
+                throw new InputMismatchException();
+            }
+
+            System.out.println("Enter the age of the student (Greater than 0):");
+            int age = Integer.parseInt(scanner.nextLine());
+            if (age <= 0) {
+                throw new InputMismatchException();
+            }
+
+            Student student = university.createStudent(name, age);
+            System.out.println("Student created with id no. " + student.getId());
+            return student;
+
+        } catch (InputMismatchException e) {
+            System.out.println(Display.INPUT_ERROR);
+            return null;
+        }
+    }
+
+    public static boolean enlistStudentToCourse(Scanner scanner, University university, Student student) {
+        try {
+            System.out.println("Enter the id of the course to enlist the " +
+                    "student (0 for exiting without enlisting):");
+            boolean enlisted = false;
+            int courseId = Integer.parseInt(scanner.nextLine());
+            if (courseId == 0) {
+                return true;
+            } else if (courseId < 0) {
+                throw new InputMismatchException();
+            }
+
+            enlisted = university.enlistStudentToCourse(student, courseId);
+            if (enlisted){
+                System.out.println("Student enlisted in course with id no. " + courseId);
+            } else {
+                System.out.println("Wrong id or student already enlisted to course, try again");
+            }
+            return enlisted;
+
+        } catch (InputMismatchException e) {
+            System.out.println(Display.INPUT_ERROR);
+            return false;
+        }
     }
 }
